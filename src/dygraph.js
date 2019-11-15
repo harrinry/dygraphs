@@ -2365,32 +2365,27 @@ Dygraph.prototype.renderGraph_ = function(is_initial_draw) {
  *   indices are into the axes_ array.
  */
 Dygraph.prototype.computeYAxes_ = function() {
-  var axis, index, opts, v;
-
   // this.axes_ doesn't match this.attributes_.axes_.options. It's used for
   // data computation as well as options storage.
   // Go through once and add all the axes.
   this.axes_ = [];
 
-  for (axis = 0; axis < this.attributes_.numAxes(); axis++) {
+  for (let axis = 0; axis < this.attributes_.numAxes(); axis++) {
     // Add a new axis, making a copy of its per-axis options.
-    opts = { g : this };
+    let opts = { g : this };
     utils.update(opts, this.attributes_.axisOptions(axis));
     this.axes_[axis] = opts;
   }
 
-  for (axis = 0; axis < this.axes_.length; axis++) {
-    if (axis === 0) {
-      opts = this.optionsViewForAxis_('y' + (axis ? '2' : ''));
-      v = opts("valueRange");
-      if (v) this.axes_[axis].valueRange = v;
-    } else {  // To keep old behavior
-      var axes = this.user_attrs_.axes;
-      if (axes && axes.y2) {
-        v = axes.y2.valueRange;
-        if (v) this.axes_[axis].valueRange = v;
-      }
-    }
+  // check each axis to see if the valueRange has been specified
+  for (let axis = 0; axis < this.axes_.length; axis++) {
+    // axis name is y/y1, y2, y3, y4
+    let axisName = 'y' + (axis + 1);
+    // get the valueRange option for this axis
+    let axisValueRange = this.optionsViewForAxis_(axisName)('valueRange');
+
+    // if its been specified, set it to the axis
+    if (axisValueRange) this.axes_[axis].valueRange = axisValueRange;
   }
 };
 
