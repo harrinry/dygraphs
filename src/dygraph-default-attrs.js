@@ -102,7 +102,8 @@ var DEFAULT_ATTRS = {
       drawGrid: true,
       drawAxis: true,
       independentTicks: true,
-      ticker: DygraphTickers.dateTicker
+      ticker: DygraphTickers.dateTicker,
+      tickTextColor : '#000'
     },
     y: {
       axisLabelWidth: 50,
@@ -112,7 +113,8 @@ var DEFAULT_ATTRS = {
       drawGrid: true,
       drawAxis: true,
       independentTicks: true,
-      ticker: DygraphTickers.numericTicks
+      ticker: DygraphTickers.numericTicks,
+      tickTextColor : '#000'
     },
     y2: {
       axisLabelWidth: 50,
@@ -122,7 +124,30 @@ var DEFAULT_ATTRS = {
       drawAxis: true,  // only applies when there are two axes of data.
       drawGrid: false,
       independentTicks: false,
-      ticker: DygraphTickers.numericTicks
+      ticker: DygraphTickers.numericTicks,
+      tickTextColor : '#000'
+    },
+    y3: {
+      axisLabelWidth: 50,
+      pixelsPerLabel: 30,
+      valueFormatter: utils.numberValueFormatter,
+      axisLabelFormatter: utils.numberAxisLabelFormatter,
+      drawAxis: true,  // only applies when there are two axes of data.
+      drawGrid: false,
+      independentTicks: false,
+      ticker: DygraphTickers.numericTicks,
+      tickTextColor : '#000'
+    },
+    y4: {
+      axisLabelWidth: 50,
+      pixelsPerLabel: 30,
+      valueFormatter: utils.numberValueFormatter,
+      axisLabelFormatter: utils.numberAxisLabelFormatter,
+      drawAxis: true,  // only applies when there are two axes of data.
+      drawGrid: false,
+      independentTicks: false,
+      ticker: DygraphTickers.numericTicks,
+      tickTextColor : '#000'
     }
   }
 };

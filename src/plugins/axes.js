@@ -64,14 +64,32 @@ axes.prototype.layout = function(e) {
     e.reserveSpaceBottom(h);
   }
 
-  if (g.numAxes() == 2) {
+  // if there is a y2
+  if (g.numAxes() >= 2) {
     if (g.getOptionForAxis('drawAxis', 'y2')) {
       var w = g.getOptionForAxis('axisLabelWidth', 'y2') + 2 * g.getOptionForAxis('axisTickSize', 'y2');
       e.reserveSpaceRight(w);
     }
-  } else if (g.numAxes() > 2) {
-    g.error('Only two y-axes are supported at this time. (Trying ' +
-            'to use ' + g.numAxes() + ')');
+  }
+
+  // if there is a y3
+  if (g.numAxes() >= 3) {
+    if (g.getOptionForAxis('drawAxis', 'y3')) {
+      var w = g.getOptionForAxis('axisLabelWidth', 'y3') + 2 * g.getOptionForAxis('axisTickSize', 'y3');
+      e.reserveSpaceLeft(w);
+    }
+  }
+
+  // if there is a y3
+  if (g.numAxes() >= 4) {
+    if (g.getOptionForAxis('drawAxis', 'y4')) {
+      var w = g.getOptionForAxis('axisLabelWidth', 'y4') + 2 * g.getOptionForAxis('axisTickSize', 'y4');
+      e.reserveSpaceRight(w);
+    }
+  }
+
+  if (g.numAxes() > 4) {
+    g.error('Only four y-axes are supported at this time. (Trying to use ' + g.numAxes() + ')');
   }
 };
 
@@ -163,19 +181,41 @@ axes.prototype.willDrawChart = function(e) {
   if (g.getOptionForAxis('drawAxis', 'y')) {
     if (layout.yticks && layout.yticks.length > 0) {
       var num_axes = g.numAxes();
-      var getOptions = [makeOptionGetter('y'), makeOptionGetter('y2')];
       layout.yticks.forEach(tick => {
         if (tick.label === undefined) return;  // this tick only has a grid line.
-        x = area.x;
-        var sgn = 1;
-        var prec_axis = 'y1';
-        var getAxisOption = getOptions[0];
-        if (tick.axis == 1) {  // right-side y-axis
-          x = area.x + area.w;
-          sgn = -1;
-          prec_axis = 'y2';
-          getAxisOption = getOptions[1];
+
+        var prec_axis = null;
+        var getAxisOption = null;
+
+        // for y (y1) axis
+        if (tick.axis === 0) {
+          x = area.x;
+          prec_axis = 'y1';
+          getAxisOption = makeOptionGetter('y');
         }
+        // for y2 axis
+        else if (tick.axis === 1) {
+          x = area.x + area.w;
+          prec_axis = 'y2';
+          getAxisOption = makeOptionGetter('y2');
+        }
+        // for y3 axis
+        else if (tick.axis === 2) {
+          x = area.x;
+          prec_axis = 'y3';
+          getAxisOption = makeOptionGetter('y3');
+        }
+        // for y4 axis
+        else if (tick.axis === 3) {
+          x = area.x + area.w;
+          prec_axis = 'y4';
+          getAxisOption = makeOptionGetter('y4');
+        }
+        // otherwise, throw error
+        else {
+          throw new Error("attempting to draw tick on unknown axis " + tick.axis);
+        }
+
         var fontSize = getAxisOption('axisLabelFontSize');
         y = area.y + tick.pos * area.h;
 
@@ -197,15 +237,27 @@ axes.prototype.willDrawChart = function(e) {
           label.style.top = top + 'px';
         }
         // TODO: replace these with css classes?
-        if (tick.axis === 0) {
+        if (tick.axis === 0) { // y1
           label.style.left = (area.x - getAxisOption('axisLabelWidth') - getAxisOption('axisTickSize')) + 'px';
-          label.style.textAlign = 'right';
-        } else if (tick.axis == 1) {
-          label.style.left = (area.x + area.w +
-                              getAxisOption('axisTickSize')) + 'px';
-          label.style.textAlign = 'left';
+        } else if (tick.axis === 1 ) { // y2
+          label.style.left = (area.x + area.w + getAxisOption('axisTickSize')) + 'px';
+        } else if (tick.axis === 2 ) { // y3
+          // get the position of the y ticks
+          var y1OptionsGetter = makeOptionGetter('y');
+          var y1TickPosition = area.x - y1OptionsGetter('axisLabelWidth') - y1OptionsGetter('axisTickSize');
+
+          label.style.left = (y1TickPosition - getAxisOption('axisLabelWidth') - getAxisOption('axisTickSize')) + 'px';
+        } else if (tick.axis === 3 ) { // y4
+          // get the position of the y2 ticks
+          var y2OptionsGetter = makeOptionGetter('y2');
+          var y2TickPosition = area.x + area.w + y2OptionsGetter('axisTickSize');
+
+          label.style.left = (y2TickPosition + getAxisOption('axisLabelWidth') + getAxisOption('axisTickSize')) + 'px';
         }
+
+        label.style.textAlign = 'center';
         label.style.width = getAxisOption('axisLabelWidth') + 'px';
+
         containerDiv.appendChild(label);
         this.ylabels_.push(label);
       });

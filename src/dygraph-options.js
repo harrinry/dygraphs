@@ -83,7 +83,11 @@ DygraphOptions.AXIS_STRING_MAPPINGS_ = {
   'y1' : 0,
   'Y1' : 0,
   'y2' : 1,
-  'Y2' : 1
+  'Y2' : 1,
+  'y3' : 2,
+  'Y3' : 2,
+  'y4' : 3,
+  'Y4' : 3
 };
 
 /**
@@ -164,6 +168,12 @@ DygraphOptions.prototype.reparseSeries = function() {
   if (this.yAxes_.length > 1) {
     utils.update(this.yAxes_[1].options, axis_opts["y2"] || {});
   }
+  if (this.yAxes_.length > 2) {
+    utils.update(this.yAxes_[2].options, axis_opts["y3"] || {});
+  }
+  if (this.yAxes_.length > 3) {
+    utils.update(this.yAxes_[3].options, axis_opts["y4"] || {});
+  }
   utils.update(this.xAxis_.options, axis_opts["x"] || {});
 
   // For "production" code, this gets removed by uglifyjs.
@@ -226,6 +236,10 @@ DygraphOptions.prototype.getForAxis = function(name, axis) {
       axisIdx = 0;
     } else if (axis == "y2") {
       axisIdx = 1;
+    } else if (axis == 'y3') {
+      axisIdx = 2;
+    } else if (axis == 'y4') {
+      axisIdx = 3;
     } else if (axis == "x") {
       axisIdx = -1; // simply a placeholder for below.
     } else {
