@@ -70,7 +70,6 @@
   z-index: 10;
   line-height: normal;
   overflow: hidden;
-  color: black;  /* replaces old axisLabelColor option */
 }
 
 .dygraph-axis-label-x {

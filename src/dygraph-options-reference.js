@@ -349,6 +349,12 @@ OPTIONS_REFERENCE =  // <JSON>
     "type": "integer",
     "description": "Number of pixels to require between each x- and y-label. Larger values will yield a sparser axis with fewer ticks. This is set on a <a href='per-axis.html'>per-axis</a> basis."
   },
+  "tickTextColor": {
+    "default": "#000",
+    "labels": ["Axis display", "Grid"],
+    "type": "string",
+    "description": "Color value to display the text color of axis tick marks. This is set on a <a href='per-axis.html'>per-axis</a> basis."
+  },
   "labelsDiv": {
     "default": "null",
     "labels": ["Legend"],

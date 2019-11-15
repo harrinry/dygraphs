@@ -178,6 +178,30 @@ axes.prototype.willDrawChart = function(e) {
     };
   };
 
+  // Helper for finding the foreground text color based on the background color
+  function idealTextColor(bgColor) {
+    function getRGBComponents(color) {
+
+      var r = color.substring(1, 3);
+      var g = color.substring(3, 5);
+      var b = color.substring(5, 7);
+
+      return {
+        R: parseInt(r, 16),
+        G: parseInt(g, 16),
+        B: parseInt(b, 16)
+      };
+    }
+
+    var nThreshold = 105;
+    var components = getRGBComponents(bgColor);
+    var bgDelta = (components.R * 0.299) + (components.G * 0.587) + (components.B * 0.114);
+
+    return ((255 - bgDelta) < nThreshold) ? "#000000" : "#ffffff";
+  }
+
+
+
   if (g.getOptionForAxis('drawAxis', 'y')) {
     if (layout.yticks && layout.yticks.length > 0) {
       var num_axes = g.numAxes();
@@ -255,6 +279,11 @@ axes.prototype.willDrawChart = function(e) {
           label.style.left = (y2TickPosition + getAxisOption('axisLabelWidth') + getAxisOption('axisTickSize')) + 'px';
         }
 
+        var backgroundColor = getAxisOption('tickTextColor');
+
+        label.style.backgroundColor = backgroundColor;
+        label.style.borderRadius = '2px';
+        label.style.color = idealTextColor(backgroundColor);
         label.style.textAlign = 'center';
         label.style.width = getAxisOption('axisLabelWidth') + 'px';
 
