@@ -202,106 +202,115 @@ axes.prototype.willDrawChart = function(e) {
 
 
 
-  if (g.getOptionForAxis('drawAxis', 'y')) {
-    if (layout.yticks && layout.yticks.length > 0) {
-      var num_axes = g.numAxes();
-      layout.yticks.forEach(tick => {
-        if (tick.label === undefined) return;  // this tick only has a grid line.
+  if (layout.yticks && layout.yticks.length > 0) {
+    var num_axes = g.numAxes();
+    layout.yticks.forEach(tick => {
+      if (tick.label === undefined) return;  // this tick only has a grid line.
 
-        var prec_axis = null;
-        var getAxisOption = null;
+      var prec_axis = null;
+      var getAxisOption = null;
 
-        // for y (y1) axis
-        if (tick.axis === 0) {
-          x = area.x;
-          prec_axis = 'y1';
-          getAxisOption = makeOptionGetter('y');
-        }
-        // for y2 axis
-        else if (tick.axis === 1) {
-          x = area.x + area.w;
-          prec_axis = 'y2';
-          getAxisOption = makeOptionGetter('y2');
-        }
-        // for y3 axis
-        else if (tick.axis === 2) {
-          x = area.x;
-          prec_axis = 'y3';
-          getAxisOption = makeOptionGetter('y3');
-        }
-        // for y4 axis
-        else if (tick.axis === 3) {
-          x = area.x + area.w;
-          prec_axis = 'y4';
-          getAxisOption = makeOptionGetter('y4');
-        }
-        // otherwise, throw error
-        else {
-          throw new Error("attempting to draw tick on unknown axis " + tick.axis);
-        }
-
-        var fontSize = getAxisOption('axisLabelFontSize');
-        y = area.y + tick.pos * area.h;
-
-        /* Tick marks are currently clipped, so don't bother drawing them.
-        context.beginPath();
-        context.moveTo(halfUp(x), halfDown(y));
-        context.lineTo(halfUp(x - sgn * this.attr_('axisTickSize')), halfDown(y));
-        context.closePath();
-        context.stroke();
-        */
-
-        label = makeDiv(tick.label, 'y', num_axes == 2 ? prec_axis : null);
-        var top = (y - fontSize / 2);
-        if (top < 0) top = 0;
-
-        if (top + fontSize + 3 > canvasHeight) {
-          label.style.bottom = '0';
-        } else {
-          label.style.top = top + 'px';
-        }
-        // TODO: replace these with css classes?
-        if (tick.axis === 0) { // y1
-          label.style.left = (area.x - getAxisOption('axisLabelWidth') - getAxisOption('axisTickSize')) + 'px';
-        } else if (tick.axis === 1 ) { // y2
-          label.style.left = (area.x + area.w + getAxisOption('axisTickSize')) + 'px';
-        } else if (tick.axis === 2 ) { // y3
-          // get the position of the y ticks
-          var y1OptionsGetter = makeOptionGetter('y');
-          var y1TickPosition = area.x - y1OptionsGetter('axisLabelWidth') - y1OptionsGetter('axisTickSize');
-
-          label.style.left = (y1TickPosition - getAxisOption('axisLabelWidth') - getAxisOption('axisTickSize')) + 'px';
-        } else if (tick.axis === 3 ) { // y4
-          // get the position of the y2 ticks
-          var y2OptionsGetter = makeOptionGetter('y2');
-          var y2TickPosition = area.x + area.w + y2OptionsGetter('axisTickSize');
-
-          label.style.left = (y2TickPosition + getAxisOption('axisLabelWidth') + getAxisOption('axisTickSize')) + 'px';
-        }
-
-        var backgroundColor = getAxisOption('tickTextColor');
-
-        label.style.backgroundColor = backgroundColor;
-        label.style.borderRadius = '2px';
-        label.style.color = idealTextColor(backgroundColor);
-        label.style.textAlign = 'center';
-        label.style.width = getAxisOption('axisLabelWidth') + 'px';
-
-        containerDiv.appendChild(label);
-        this.ylabels_.push(label);
-      });
-
-      // The lowest tick on the y-axis often overlaps with the leftmost
-      // tick on the x-axis. Shift the bottom tick up a little bit to
-      // compensate if necessary.
-      var bottomTick = this.ylabels_[0];
-      // Interested in the y2 axis also?
-      var fontSize = g.getOptionForAxis('axisLabelFontSize', 'y');
-      var bottom = parseInt(bottomTick.style.top, 10) + fontSize;
-      if (bottom > canvasHeight - fontSize) {
-        bottomTick.style.top = (parseInt(bottomTick.style.top, 10) -
-            fontSize / 2) + 'px';
+      // for y (y1) axis
+      if (tick.axis === 0) {
+        x = area.x;
+        prec_axis = 'y1';
+        getAxisOption = makeOptionGetter('y');
       }
+      // for y2 axis
+      else if (tick.axis === 1) {
+        x = area.x + area.w;
+        prec_axis = 'y2';
+        getAxisOption = makeOptionGetter('y2');
+      }
+      // for y3 axis
+      else if (tick.axis === 2) {
+        x = area.x;
+        prec_axis = 'y3';
+        getAxisOption = makeOptionGetter('y3');
+      }
+      // for y4 axis
+      else if (tick.axis === 3) {
+        x = area.x + area.w;
+        prec_axis = 'y4';
+        getAxisOption = makeOptionGetter('y4');
+      }
+      // otherwise, throw error
+      else {
+        throw new Error("attempting to draw tick on unknown axis " + tick.axis);
+      }
+
+      // dont draw the tick if this axis is not being drawn
+      if (! getAxisOption('drawAxis')) return;
+
+      var fontSize = getAxisOption('axisLabelFontSize');
+      y = area.y + tick.pos * area.h;
+
+      /* Tick marks are currently clipped, so don't bother drawing them.
+      context.beginPath();
+      context.moveTo(halfUp(x), halfDown(y));
+      context.lineTo(halfUp(x - sgn * this.attr_('axisTickSize')), halfDown(y));
+      context.closePath();
+      context.stroke();
+      */
+
+      label = makeDiv(tick.label, 'y', num_axes == 2 ? prec_axis : null);
+      var top = (y - fontSize / 2);
+      if (top < 0) top = 0;
+
+      if (top + fontSize + 3 > canvasHeight) {
+        label.style.bottom = '0';
+      } else {
+        label.style.top = top + 'px';
+      }
+      // TODO: replace these with css classes?
+      if (tick.axis === 0) { // y1
+        label.style.left = (area.x - getAxisOption('axisLabelWidth') - getAxisOption('axisTickSize')) + 'px';
+      } else if (tick.axis === 1 ) { // y2
+        label.style.left = (area.x + area.w + getAxisOption('axisTickSize')) + 'px';
+      } else if (tick.axis === 2 ) { // y3
+        // get the position of the y ticks
+        let y1OptionsGetter = makeOptionGetter('y');
+        let y1TickPosition = area.x - y1OptionsGetter('axisLabelWidth') - y1OptionsGetter('axisTickSize');
+
+        label.style.left = y1OptionsGetter('drawAxis') ?
+                           // if y1 is visible
+                           (y1TickPosition - getAxisOption('axisLabelWidth') - getAxisOption('axisTickSize')) + 'px'
+                           // if its not, draw where y1 tick would be
+                           : y1TickPosition + 'px';
+      } else if (tick.axis === 3 ) { // y4
+        // get the position of the y2 ticks
+        let y2OptionsGetter = makeOptionGetter('y2');
+        let y2TickPosition = area.x + area.w + y2OptionsGetter('axisTickSize');
+
+        label.style.left = y2OptionsGetter('drawAxis') ?
+                          // if y2 is visible
+                          (y2TickPosition + getAxisOption('axisLabelWidth') + getAxisOption('axisTickSize')) + 'px'
+                          // if its not, draw where y2 tick would be
+                          : y2TickPosition + 'px';
+      }
+
+      var backgroundColor = getAxisOption('tickTextColor');
+
+      label.style.backgroundColor = backgroundColor;
+      label.style.borderRadius = '2px';
+      label.style.color = idealTextColor(backgroundColor);
+      label.style.textAlign = 'center';
+      label.style.width = getAxisOption('axisLabelWidth') + 'px';
+
+      containerDiv.appendChild(label);
+      this.ylabels_.push(label);
+    });
+
+    // The lowest tick on the y-axis often overlaps with the leftmost
+    // tick on the x-axis. Shift the bottom tick up a little bit to
+    // compensate if necessary.
+    var bottomTick = this.ylabels_[0];
+    // Interested in the y2 axis also?
+    var fontSize = g.getOptionForAxis('axisLabelFontSize', 'y');
+    var bottom = parseInt(bottomTick.style.top, 10) + fontSize;
+    if (bottom > canvasHeight - fontSize) {
+      bottomTick.style.top = (parseInt(bottomTick.style.top, 10) -
+          fontSize / 2) + 'px';
     }
 
     // draw a vertical line on the left to separate the chart from the labels.

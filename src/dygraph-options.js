@@ -164,14 +164,18 @@ DygraphOptions.prototype.reparseSeries = function() {
   }
 
   var axis_opts = this.user_["axes"] || {};
-  utils.update(this.yAxes_[0].options, axis_opts["y"] || {});
-  if (this.yAxes_.length > 1) {
+  // utils.update(this.yAxes_[0].options, axis_opts["y"] || {});
+  if (this.yAxes_.length > 0 && !! this.yAxes_[0]) {
+    utils.update(this.yAxes_[0].options, axis_opts["y"] || {});
+  }
+  if (this.yAxes_.length > 1 && !! this.yAxes_[1]) {
     utils.update(this.yAxes_[1].options, axis_opts["y2"] || {});
   }
-  if (this.yAxes_.length > 2) {
+  if (this.yAxes_.length > 2 && !! this.yAxes_[2]) {
+    console.log(this.yAxes_);
     utils.update(this.yAxes_[2].options, axis_opts["y3"] || {});
   }
-  if (this.yAxes_.length > 3) {
+  if (this.yAxes_.length > 3 && !! this.yAxes_[3]) {
     utils.update(this.yAxes_[3].options, axis_opts["y4"] || {});
   }
   utils.update(this.xAxis_.options, axis_opts["x"] || {});
@@ -324,14 +328,14 @@ DygraphOptions.prototype.axisForSeries = function(series) {
  */
 // TODO(konigsberg): this is y-axis specific. Support the x axis.
 DygraphOptions.prototype.axisOptions = function(yAxis) {
-  return this.yAxes_[yAxis].options;
+  return !! this.yAxes_[yAxis] ? this.yAxes_[yAxis].options : {};
 };
 
 /**
  * Return the series associated with an axis.
  */
 DygraphOptions.prototype.seriesForAxis = function(yAxis) {
-  return this.yAxes_[yAxis].series;
+  return !! this.yAxes_[yAxis] ? this.yAxes_[yAxis].series : [];
 };
 
 /**
