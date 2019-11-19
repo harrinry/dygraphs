@@ -27,6 +27,7 @@ import * as utils from '../dygraph-utils';
  * It does _not_ draw the grid lines which span the entire chart.
  */
 var axes = function() {
+  this.axisHeaders_ = [];
   this.xlabels_ = [];
   this.ylabels_ = [];
 };
@@ -103,8 +104,10 @@ axes.prototype.detachLabels = function() {
 
   removeArray(this.xlabels_);
   removeArray(this.ylabels_);
+  removeArray(this.axisHeaders_);
   this.xlabels_ = [];
   this.ylabels_ = [];
+  this.axisHeaders_ = [];
 };
 
 axes.prototype.clearChart = function(e) {
@@ -200,7 +203,69 @@ axes.prototype.willDrawChart = function(e) {
     return ((255 - bgDelta) < nThreshold) ? "#000000" : "#ffffff";
   }
 
+  // draw axis header labels
+  // todo : for loop
+  for (let axisHeaderIndex = 0; axisHeaderIndex < g.numAxes(); axisHeaderIndex++) {
+    let options = null;
+    let left = 0;
 
+    if (axisHeaderIndex === 0) {
+      options = makeOptionGetter('y');
+      left = area.x - options('axisLabelWidth') - options('axisTickSize');
+    }
+    else if (axisHeaderIndex === 1) {
+      options = makeOptionGetter('y2');
+      left = area.x + area.w + options('axisTickSize');
+    }
+    else if (axisHeaderIndex === 2) {
+      options = makeOptionGetter('y3');
+
+      // get the position of the y1 ticks
+      let y1OptionsGetter = makeOptionGetter('y');
+      let y1TickPosition = area.x - y1OptionsGetter('axisLabelWidth') - y1OptionsGetter('axisTickSize');
+
+      left = y1OptionsGetter('drawAxis') ?
+          // if y1 is visible
+          y1TickPosition - options('axisLabelWidth') - options('axisTickSize')
+          // if its not, draw where y1 tick would be
+          : y1TickPosition;
+    }
+    else if (axisHeaderIndex === 3) {
+      options = makeOptionGetter('y4');
+
+      // get the position of the y2 ticks
+      let y2OptionsGetter = makeOptionGetter('y2');
+      let y2TickPosition = area.x + area.w + y2OptionsGetter('axisTickSize');
+
+      left = y2OptionsGetter('drawAxis') ?
+          // if y2 is visible
+          y2TickPosition + options('axisLabelWidth') + options('axisTickSize')
+          // if its not, draw where y2 tick would be
+          : y2TickPosition;
+    }
+    else return;
+
+    let text = options('axisLabelHeader');
+
+    // if the label header is not specified, don't draw
+    if ( ! text) continue;
+
+    // create the div
+    let headerLabel = document.createElement('div');
+
+    // insert the text
+    headerLabel.innerHTML = text;
+
+    headerLabel.style.left = left + 'px';
+    headerLabel.style.width = options('axisLabelWidth') + 'px';
+    headerLabel.style.fontSize = options('axisLabelFontSize') + 'px';
+    headerLabel.style.borderColor = options('tickTextColor');
+    headerLabel.style.color = options('tickTextColor');
+    headerLabel.classList.add('dygraph-axis-header');
+
+    containerDiv.appendChild(headerLabel);
+    this.axisHeaders_.push(headerLabel);
+  }
 
   if (layout.yticks && layout.yticks.length > 0) {
     var num_axes = g.numAxes();

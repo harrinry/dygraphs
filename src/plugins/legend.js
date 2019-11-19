@@ -207,6 +207,7 @@ Legend.generateLegendHTML = function(g, x, sel_points, oneEmWidth, row) {
       var seriesData = {
         dashHTML: generateLegendDashHTML(strokePattern, series.color, oneEmWidth),
         label: labels[i],
+        labelHeader : g.axes_[series.axis-1].axisLabelHeader,
         labelHTML: escapeHTML(labels[i]),
         isVisible: series.visible,
         color: series.color

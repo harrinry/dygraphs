@@ -172,7 +172,6 @@ DygraphOptions.prototype.reparseSeries = function() {
     utils.update(this.yAxes_[1].options, axis_opts["y2"] || {});
   }
   if (this.yAxes_.length > 2 && !! this.yAxes_[2]) {
-    console.log(this.yAxes_);
     utils.update(this.yAxes_[2].options, axis_opts["y3"] || {});
   }
   if (this.yAxes_.length > 3 && !! this.yAxes_[3]) {

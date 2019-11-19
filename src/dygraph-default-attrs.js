@@ -106,6 +106,7 @@ var DEFAULT_ATTRS = {
       tickTextColor : '#000'
     },
     y: {
+      axisLabelHeader : null,
       axisLabelWidth: 50,
       pixelsPerLabel: 30,
       valueFormatter: utils.numberValueFormatter,
@@ -117,6 +118,7 @@ var DEFAULT_ATTRS = {
       tickTextColor : '#000'
     },
     y2: {
+      axisLabelHeader : null,
       axisLabelWidth: 50,
       pixelsPerLabel: 30,
       valueFormatter: utils.numberValueFormatter,
@@ -128,6 +130,7 @@ var DEFAULT_ATTRS = {
       tickTextColor : '#000'
     },
     y3: {
+      axisLabelHeader : null,
       axisLabelWidth: 50,
       pixelsPerLabel: 30,
       valueFormatter: utils.numberValueFormatter,
@@ -139,6 +142,7 @@ var DEFAULT_ATTRS = {
       tickTextColor : '#000'
     },
     y4: {
+      axisLabelHeader : null,
       axisLabelWidth: 50,
       pixelsPerLabel: 30,
       valueFormatter: utils.numberValueFormatter,

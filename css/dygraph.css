@@ -81,6 +81,16 @@
 .dygraph-axis-label-y2 {
 }
 
+.dygraph-axis-header {
+  top: -10px;
+  position: absolute;
+  text-align: center;
+  border-radius: 2px;
+  border: white 1px solid;
+  font-weight: bold;
+  line-height: normal;
+}
+
 .dygraph-title {
   font-weight: bold;
   z-index: 10;

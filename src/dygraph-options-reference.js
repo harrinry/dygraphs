@@ -684,6 +684,12 @@ OPTIONS_REFERENCE =  // <JSON>
     "type": "float (0.0 - 1.0)",
     "description" : "Error bars (or custom bars) for each series are drawn in the same color as the series, but with partial transparency. This sets the transparency. A value of 0.0 means that the error bars will not be drawn, whereas a value of 1.0 means that the error bars will be as dark as the line for the series itself. This can be used to produce chart lines whose thickness varies at each point."
   },
+  "axisLabelHeader": {
+    "default": "null",
+    "labels": ["Axis display", "Chart labels"],
+    "type": "string",
+    "description" : "Tick header value to display above the drawn axis ticks. Set on a per-axis basis."
+  },
   "axisLabelWidth": {
     "default": "50 (y-axis), 60 (x-axis)",
     "labels": ["Axis display", "Chart labels"],
