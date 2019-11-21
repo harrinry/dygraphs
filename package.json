@@ -1,5 +1,5 @@
 {
-  "name": "dygraphs",
+  "name": "@ametekstc/dygraphs",
   "version": "2.1.0",
   "description": "dygraphs is a fast, flexible open source JavaScript charting library.",
   "main": "index.es5",
@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/danvk/dygraphs.git"
+    "url": "git://github.com/AMETEKTCI/dygraphs.git"
   },
   "keywords": [
     "dygraphs",
@@ -28,9 +28,9 @@
   "author": "Dan Vanderkam (danvdk@gmail.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/danvk/dygraphs/issues"
+    "url": "https://github.com/AMETEKTCI/dygraphs/issues"
   },
-  "homepage": "https://github.com/danvk/dygraphs",
+  "homepage": "https://github.com/AMETEKTCI/dygraphs",
   "devDependencies": {
     "babel": "^5.8.23",
     "babel-core": "^5.8.25",
