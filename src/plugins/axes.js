@@ -248,7 +248,7 @@ axes.prototype.willDrawChart = function(e) {
     let text = options('axisLabelHeader');
 
     // if the label header is not specified, don't draw
-    if ( ! text) continue;
+    if (( ! text) || (! options('drawAxis')) ) continue;
 
     // create the div
     let headerLabel = document.createElement('div');
