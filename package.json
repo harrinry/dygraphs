@@ -1,5 +1,5 @@
 {
-  "name": "@ametekstc/dygraphs",
+  "name": "@ametektci/dygraphs",
   "version": "2.1.0",
   "description": "dygraphs is a fast, flexible open source JavaScript charting library.",
   "main": "index.es5",
