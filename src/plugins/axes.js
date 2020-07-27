@@ -261,6 +261,8 @@ axes.prototype.willDrawChart = function(e) {
     headerLabel.style.fontSize = options('axisLabelFontSize') + 'px';
     headerLabel.style.borderColor = options('tickTextColor');
     headerLabel.style.color = options('tickTextColor');
+    headerLabel.style.backgroundColor = idealTextColor(options('tickTextColor'))
+    headerLabel.style.zIndex = '1';
     headerLabel.classList.add('dygraph-axis-header');
 
     containerDiv.appendChild(headerLabel);
