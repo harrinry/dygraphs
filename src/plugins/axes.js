@@ -371,14 +371,14 @@ axes.prototype.willDrawChart = function(e) {
     // The lowest tick on the y-axis often overlaps with the leftmost
     // tick on the x-axis. Shift the bottom tick up a little bit to
     // compensate if necessary.
-    var bottomTick = this.ylabels_[0];
+    // var bottomTick = this.ylabels_[0];
     // Interested in the y2 axis also?
-    var fontSize = g.getOptionForAxis('axisLabelFontSize', 'y');
-    var bottom = parseInt(bottomTick.style.top, 10) + fontSize;
-    if (bottom > canvasHeight - fontSize) {
-      bottomTick.style.top = (parseInt(bottomTick.style.top, 10) -
-          fontSize / 2) + 'px';
-    }
+    // var fontSize = g.getOptionForAxis('axisLabelFontSize', 'y');
+    // var bottom = parseInt(bottomTick.style.top, 10) + fontSize;
+    // if (bottom > canvasHeight - fontSize) {
+    //   bottomTick.style.top = (parseInt(bottomTick.style.top, 10) -
+    //       fontSize / 2) + 'px';
+    // }
 
     // draw a vertical line on the left to separate the chart from the labels.
     var axisX;
